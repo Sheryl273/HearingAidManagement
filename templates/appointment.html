@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card-header">
+    <div class="page-heading">Appointments</div>
+    <div class="page-description">Schedule and manage patient appointments</div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Schedule New Appointment</div>
+        <div class="card-subtitle">Book a patient visit with a doctor</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="patient_id">Patient</label>
+            <select id="patient_id" name="patient_id" required>
+                <option value="">Select Patient</option>
+                {% for p in patients %}
+                <option value="{{ p[0] }}">{{ p[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="doctor_id">Doctor</label>
+            <select id="doctor_id" name="doctor_id" required>
+                <option value="">Select Doctor</option>
+                {% for d in doctors %}
+                <option value="{{ d[0] }}">{{ d[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="appointment_date">Date</label>
+            <input id="appointment_date" name="appointment_date" type="date" required>
+        </div>
+        <div class="form-row">
+            <label for="appointment_time">Time</label>
+            <input id="appointment_time" name="appointment_time" type="time" required>
+        </div>
+        <div class="form-row">
+            <label for="notes">Notes</label>
+            <textarea id="notes" name="notes" rows="3" placeholder="Optional notes about the appointment"></textarea>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Schedule Appointment</button>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+
+<div style="height:18px"></div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Scheduled Appointments</div>
+    </div>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if appointments %}
+                {% for a in appointments %}
+                <tr>
+                    <td>{{ a[1] }}</td>
+                    <td>{{ a[2] }}</td>
+                    <td>{{ a[3] }}</td>
+                    <td>{{ a[4] }}</td>
+                    <td>
+                        <span class="status-badge status-{{ a[5]|lower }}">{{ a[5] }}</span>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('update_appointment_status', aid=a[0]) }}" style="display:inline-block;">
+                            <select name="status" class="btn btn-sm btn-ghost" onchange="this.form.submit()">
+                                <option value="Scheduled" {% if a[5] == 'Scheduled' %}selected{% endif %}>Scheduled</option>
+                                <option value="Completed" {% if a[5] == 'Completed' %}selected{% endif %}>Completed</option>
+                                <option value="Cancelled" {% if a[5] == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td class="table-empty" colspan="6">No appointments scheduled yet.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.status-scheduled {
+    background: #dbeafe;
+    color: #1e40af;
+}
+.status-completed {
+    background: #d1fae5;
+    color: #065f46;
+}
+.status-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card-header">
+    <div class="page-heading">Patient Hearing Aid Report</div>
+    <p class="page-description">
+        Combined view of patients, their latest hearing test results, and the hearing aids they have been fitted with.
+    </p>
+    <div style="margin-left:auto">
+        <a class="btn btn-primary" href="{{ url_for('export_report') }}">Download CSV</a>
+    </div>
+</div>
+<div class="table-card">
+    <table>
+        <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Left Ear</th>
+            <th>Right Ear</th>
+            <th>Hearing Aid</th>
+            <th>Manufacturer</th>
+            <th>Doctor</th>
+            <th>Hearing Loss</th>
+            <th>Last Test</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if data %}
+            {% for r in data %}
+            <tr>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td>{{ r[2] }}</td>
+                <td>{{ r[3] or '-' }}</td>
+                <td>{{ r[4] or '-' }}</td>
+                <td>{{ r[5] or '-' }}</td>
+                <td>{{ r[6] }}</td>
+                <td>{{ r[7] }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td class="table-empty" colspan="8">No report data available yet.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

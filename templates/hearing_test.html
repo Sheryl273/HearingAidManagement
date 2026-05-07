@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Record Hearing Test</div>
+        <div class="card-subtitle">Attach test results to a patient.</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="patient_id">Patient</label>
+            <select id="patient_id" name="patient_id" required>
+                {% for p in patients %}
+                <option value="{{ p[0] }}">{{ p[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="doctor_id">Doctor (Optional)</label>
+            <select id="doctor_id" name="doctor_id">
+                <option value="">Select Doctor</option>
+                {% for d in doctors %}
+                <option value="{{ d[0] }}">{{ d[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="left_ear">Left Ear Result</label>
+            <input id="left_ear" name="left_ear" type="number" placeholder="Left ear result in dB" required>
+        </div>
+        <div class="form-row">
+            <label for="right_ear">Right Ear Result</label>
+            <input id="right_ear" name="right_ear" type="number" placeholder="Right ear result in dB" required>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Save Test</button>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

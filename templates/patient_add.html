@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Add Patient</div>
+        <div class="card-subtitle">Create a new patient record.</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Full name" required>
+        </div>
+        <div class="form-row">
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" min="0" max="120" placeholder="e.g. 54" required>
+        </div>
+        <div class="form-row">
+            <label for="gender">Gender</label>
+            <input id="gender" name="gender" type="text" placeholder="e.g. Female" required>
+        </div>
+        <div class="form-row">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" placeholder="Contact number" required>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Save Patient</button>
+            <a class="btn btn-secondary" href="{{ url_for('patients') }}">View Patients</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

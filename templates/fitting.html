@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Assign Fitting</div>
+        <div class="card-subtitle">Connect a patient with a specific hearing aid.</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="patient_id">Patient</label>
+            <select id="patient_id" name="patient_id" required>
+                {% for p in patients %}
+                <option value="{{ p[0] }}">{{ p[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="doctor_id">Doctor (Optional)</label>
+            <select id="doctor_id" name="doctor_id">
+                <option value="">Select Doctor</option>
+                {% for d in doctors %}
+                <option value="{{ d[0] }}">{{ d[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="aid_id">Hearing Aid</label>
+            <select id="aid_id" name="aid_id" required>
+                {% for a in aids %}
+                <option value="{{ a[0] }}">{{ a[1] }}{% if a[3] %} - {{ a[3] }}{% endif %} (Stock: {{ a[2] }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Assign Fitting</button>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

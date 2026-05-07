@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card-header">
+    <div class="page-heading">Doctors</div>
+    <div class="page-description">Manage clinic doctors and audiologists</div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Add New Doctor</div>
+        <div class="card-subtitle">Register a new doctor in the system</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Dr. Full Name" required>
+        </div>
+        <div class="form-row">
+            <label for="specialization">Specialization</label>
+            <input id="specialization" name="specialization" type="text" placeholder="e.g. Audiology, Pediatric Audiology" required>
+        </div>
+        <div class="form-row">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" placeholder="Contact number">
+        </div>
+        <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="doctor@clinic.com">
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Add Doctor</button>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+
+<div style="height:18px"></div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Registered Doctors</div>
+    </div>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Specialization</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if doctors %}
+                {% for d in doctors %}
+                <tr>
+                    <td>{{ d[0] }}</td>
+                    <td>{{ d[1] }}</td>
+                    <td>{{ d[2] }}</td>
+                    <td>{{ d[3] }}</td>
+                    <td>{{ d[4] }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td class="table-empty" colspan="5">No doctors registered yet.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

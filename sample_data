@@ -1,0 +1,37 @@
+INSERT INTO Patient (name, age, gender, phone) VALUES
+('Anita Verma', 52, 'Female', '9876501001'),
+('Rajesh Kumar', 61, 'Male', '9876501002'),
+('Sunita Sharma', 45, 'Female', '9876501003'),
+('Amit Patel', 38, 'Male', '9876501004'),
+('Neha Singh', 29, 'Female', '9876501005'),
+('Vikram Rao', 67, 'Male', '9876501006'),
+('Pooja Mehta', 41, 'Female', '9876501007'),
+('Ramesh Iyer', 58, 'Male', '9876501008'),
+('Kavita Joshi', 34, 'Female', '9876501009'),
+('Suresh Nair', 72, 'Male', '9876501010');
+
+INSERT INTO HearingAid (model, type, price) VALUES
+('Siemens Motion', 'BTE', 52000),
+('Phonak Audeo', 'RIC', 68000),
+('Oticon Opn', 'ITE', 60000),
+('Widex Moment', 'CIC', 75000),
+('Resound One', 'BTE', 58000);
+
+INSERT INTO HearingTest (patient_id, left_ear, right_ear, test_date) VALUES
+(1, 55, 60, CURDATE()),
+(2, 65, 70, CURDATE()),
+(3, 40, 45, CURDATE()),
+(4, 30, 35, CURDATE()),
+(5, 25, 30, CURDATE()),
+(6, 70, 75, CURDATE()),
+(7, 45, 50, CURDATE()),
+(8, 60, 65, CURDATE()),
+(9, 35, 40, CURDATE()),
+(10, 75, 80, CURDATE());
+
+INSERT INTO Fitting (patient_id, aid_id, fitting_date) VALUES
+(1, 1, CURDATE()),
+(2, 2, CURDATE()),
+(3, 3, CURDATE()),
+(4, 1, CURDATE()),
+(5, 4, CURDATE());

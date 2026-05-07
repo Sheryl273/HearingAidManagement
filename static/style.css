@@ -1,0 +1,713 @@
+/* Import chosen fonts (Bodoni Moda as elegant Bodoni substitute + Montserrat for body) */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
+/* Import Playfair Display for search placeholder styling */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Base layout */
+:root {
+  /* Midnight Trust palette */
+  --primary: #023E8A; /* Deep Sapphire */
+  --primary-dark: #012f66;
+  --secondary: #CAF0F8; /* Cloud Blue */
+  --accent: #D4AF37; /* Champagne Gold */
+  --text-main: #2B2D42; /* Slate Charcoal */
+  --text-muted: #6b7280;
+  --bg: #F8F9FA; /* Soft Ivory */
+  --surface: #FFFFFF; /* default card surface */
+  --border: rgba(43,45,66,0.06);
+  --radius: 24px; /* increased from 10px to a squircle radius */
+  --radius-lg: 32px;
+  /* slightly stronger ambient shadows tokens */
+  --shadow-lift: 0 4px 6px -1px rgba(2,62,138,0.05);
+  --shadow-glow: 0 20px 40px -5px rgba(2,62,138,0.10);
+}
+
+/* Headings use Bodoni Moda (classic serif); body uses Montserrat */
+body, button, input, select, textarea, a { font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+h1,h2,h3,h4,h5,h6, .app-title, .page-heading, .card-title, .card-link-title { font-family: 'Bodoni Moda', 'Didot', serif; font-weight:700; }
+
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--text-main);
+  background: radial-gradient(circle at top left, rgba(248,249,250,1) 0%, rgba(248,249,250,1) 60%);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  padding: 18px 32px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
+}
+
+.app-header-top {
+  display: flex;
+  justify-content: center; /* center the title area */
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.app-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.app-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nav {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center; /* center nav links */
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: none; /* remove busy borders */
+  background: transparent;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: all 0.18s ease-out;
+}
+
+.nav a:hover {
+  background: rgba(255,255,255,0.06);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* Active nav underline / subtle background */
+.nav a.active {
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  box-shadow: inset 0 -2px 0 rgba(212,175,55,0.12);
+}
+
+.app-main {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.content-container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.page-heading {
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.page-description {
+  margin: 0 0 20px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Card: updated to ambient layered shadows + glassmorphism + subtle gradient overlay */
+.card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(241,245,249,0.75) 100%); /* faint diagonal overlay */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  border: 1px solid rgba(255,255,255,0.6); /* top-edge highlight */
+  box-shadow: var(--shadow-lift), var(--shadow-glow);
+  transition: transform 260ms cubic-bezier(.16,.84,.3,1), box-shadow 260ms var(--ease-smooth), border-color 260ms var(--ease-smooth);
+  position: relative; /* for anchor indicator */
+  overflow: visible;
+}
+
+/* Gold active indicator in the top-right corner of the card */
+.card::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  box-shadow: 0 4px 12px rgba(212,175,55,0.18);
+  opacity: 0; /* only visible when card is active */
+  transform: scale(0.9);
+  transition: opacity 220ms var(--ease-smooth), transform 220ms var(--ease-smooth);
+}
+.card.active::after { opacity: 1; transform: scale(1); }
+
+/* Card content anchor: big number with Bodoni + small label uppercase Montserrat */
+.card .card-anchor { display:flex; align-items:baseline; gap:12px; }
+.card .card-value { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; color: var(--primary); line-height:1; }
+.card .card-label { font-family: 'Montserrat'; font-size:0.75rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--text-muted); }
+
+/* Hover "float" effect */
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(2,62,138,0.15), 0 6px 18px rgba(2,62,138,0.06);
+  border-color: var(--accent);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.card-link {
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(202,240,248,0.85), var(--surface));
+  border: 1px solid rgba(43,45,66,0.06);
+  box-shadow: var(--shadow-soft);
+  text-decoration: none;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.18s ease-out;
+}
+
+.card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(43,45,66,0.12);
+}
+
+.card-link-title {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.card-link-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Headline typography refinements */
+h1, h2, .app-title {
+  letter-spacing: -0.01em; /* Tighten large headings for a high-end look */
+}
+
+/* Table header editorial style */
+th {
+  font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem; /* Small, spaced out caps look very professional */
+  color: var(--text-muted);
+}
+
+/* Forms */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+input, select {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out;
+  background-color: #f9fafb;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+  background-color: #ffffff;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* Buttons */
+.btn {
+  display: block;       /* allow auto margins to center */
+  width: max-content;   /* keep intrinsic size */
+  margin: 0 auto;       /* center horizontally */
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 8px 16px;
+  border: none;
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out;
+}
+
+.btn-primary {
+  background: var(--primary); /* solid deep sapphire */
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(2,62,138,0.12);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(37, 99, 235, 0.45);
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 1px dashed rgba(148, 163, 184, 0.9);
+}
+
+.btn-ghost:hover {
+  background: rgba(219, 234, 254, 0.5);
+}
+
+/* Button sizes */
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.80rem;
+  font-weight: 500;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  width: auto;
+}
+
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.action-buttons form {
+  display: inline-block;
+  margin: 0;
+}
+
+/* Tables */
+.table-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+thead {
+  background: linear-gradient(120deg, rgba(202,240,248,0.9), rgba(225,249,253,0.95));
+}
+
+th, td {
+  padding: 16px 12px; /* More vertical space = more luxury */
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+  text-align: left;
+}
+
+th {
+  font-weight: 600;
+  color: #1f2933;
+}
+
+tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+tbody tr:hover {
+  background: #eef2ff;
+}
+
+.table-empty {
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Patient Card: refined hero card */
+.patient-card {
+  background: rgba(255,255,255,0.70);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.40);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 15px 35px rgba(2, 62, 138, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.patient-card:hover { transform: translateY(-5px); box-shadow: 0 20px 45px rgba(2,62,138,0.08); }
+
+.card-status-badge {
+  font-family: 'Montserrat';
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  border: 1px solid rgba(212,175,55,0.22);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.patient-name {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin: 12px 0 4px 0;
+}
+
+/* Elegant sidebar (optional) */
+.app-sidebar {
+  width: 260px;
+  background: var(--text-main);
+  color: #FFFFFF;
+  height: 100vh;
+  position: fixed;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo { font-family: 'Bodoni Moda'; font-size: 1.8rem; letter-spacing: -0.02em; margin-bottom: 50px; color: var(--secondary); }
+
+.nav-item { font-family: 'Montserrat'; font-weight: 500; font-size: 0.9rem; color: rgba(255,255,255,0.6); padding: 12px 15px; margin-bottom: 8px; border-radius: 12px; text-decoration: none; transition: all 0.2s ease; }
+
+.nav-item:hover, .nav-item.active { background: rgba(202,240,248,0.1); color: #FFFFFF; }
+
+.nav-item.active::before { content: '•'; color: var(--accent); margin-right: 8px; }
+
+/* Premium table */
+.premium-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+.premium-table th { font-family: 'Montserrat'; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-muted); padding: 10px 20px; }
+.premium-table td { background: #FFFFFF; padding: 18px 20px; border-top: 1px solid rgba(0,0,0,0.02); border-bottom: 1px solid rgba(0,0,0,0.02); }
+.premium-table tr td:first-child { border-left: 1px solid rgba(0,0,0,0.02); border-radius: 12px 0 0 12px; }
+.premium-table tr td:last-child { border-right: 1px solid rgba(0,0,0,0.02); border-radius: 0 12px 12px 0; }
+
+/* Footer */
+.app-footer {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 10px 0 16px;
+}
+
+/* ------------------ Vitality Hero Cards ------------------ */
+.vitality-card, .vital-card {
+  background: rgba(202,240,248,0.88); /* Cloud Blue toned */
+  border-radius: 16px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.30); /* 1px white at 30% */
+  box-shadow: inset 0 6px 20px rgba(2,62,138,0.03), 0 8px 22px rgba(2,62,138,0.04);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.vitality-card:hover { transform: translateY(-6px); box-shadow: inset 0 6px 28px rgba(2,62,138,0.04), 0 18px 40px rgba(2,62,138,0.06); }
+
+/* inner glow subtle */
+.vitality-card::before{ content:''; position:absolute; inset:0; pointer-events:none; box-shadow: inset 0 -40px 60px rgba(212,175,55,0.02); border-radius:inherit; }
+
+/* Battery liquid fill */
+.liquid-battery {
+  --level: 50%; /* set via inline style or JS: style="--level:70%" */
+  width: 96px; height: 56px; border-radius:10px; position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.06);
+}
+.liquid-battery .liquid-fill {
+  position:absolute; left:0; right:0; bottom:0; height: calc(var(--level));
+  background: linear-gradient(180deg, rgba(212,175,55,0.95), rgba(196,166,79,0.6));
+  transition: height 800ms cubic-bezier(.22,.9,.3,1);
+}
+.liquid-battery .liquid-fill::before{
+  content:''; position:absolute; left:-50%; top:-30%; width:200%; height:100%; background: radial-gradient(closest-side, rgba(255,255,255,0.18), rgba(255,255,255,0) 60%);
+  transform: translateX(0); animation: liquid-sheen 3.6s linear infinite;
+}
+@keyframes liquid-sheen { from { transform: translateX(-20%); } to { transform: translateX(20%); } }
+
+/* small percentage label */
+.liquid-battery .pct { position:absolute; inset:auto 6px 6px auto; font-size:0.8rem; font-weight:700; color:var(--text-main); }
+
+/* ------------------ Soft Data Visualization helpers ------------------ */
+/* SVG / Canvas wrapper helpers for area-spline charts */
+.area-chart { position:relative; width:100%; height:220px; }
+.area-chart .chart-line { stroke: var(--primary); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+/* for SVG charts that support a class on area path */
+.area-chart .chart-area { fill: url(#areaGradient); opacity: 0.9; }
+/* Provide a CSS fallback gradient for canvas backgrounds */
+.area-chart::after { content:''; position:absolute; inset:0; pointer-events:none; background: linear-gradient(180deg, rgba(2,62,138,0.12), rgba(2,62,138,0.01)); mix-blend-mode:multiply; }
+
+/* Big numeric stat style */
+.stat-big { font-family: 'Bodoni Moda', serif; font-size:2.1rem; line-height:1; color:var(--primary); }
+.stat-label { font-family: 'Montserrat'; font-size:0.85rem; color:var(--text-muted); }
+
+/* ------------------ Interactive Ear Mapping ------------------ */
+.ear-map { display:flex; gap:12px; align-items:center; }
+.ear-icon { width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; stroke-width:1.6; stroke:var(--text-muted); fill:none; transition: all 180ms ease; }
+.ear-icon:hover { transform: translateY(-3px); }
+.ear-icon.active { stroke: var(--accent); box-shadow: 0 8px 20px rgba(212,175,55,0.08); }
+.ear-icon.inactive { stroke: var(--text-muted); opacity:0.6; }
+
+/* ------------------ Quick-Adjust Floating Dock ------------------ */
+.quick-dock {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px; z-index: 1100;
+  background: rgba(255,255,255,0.76); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  padding: 8px 14px; border-radius: 999px; display:flex; gap:12px; align-items:center; box-shadow: 0 18px 40px rgba(2,62,138,0.06);
+  border: 1px solid rgba(255,255,255,0.32);
+}
+.quick-dock .dock-btn { background:transparent; border:none; padding:8px; border-radius:10px; cursor:pointer; color:var(--text-main); }
+.quick-dock .dock-range { width:140px; }
+
+/* ------------------ Semantic Micro-Indicators ------------------ */
+.status-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle; }
+.status-dot.connected { background:#2D6A4F; box-shadow: 0 0 8px rgba(45,106,79,0.36); animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 6px rgba(45,106,79,0.2); transform: scale(0.98);} 50% { box-shadow: 0 0 14px rgba(45,106,79,0.32); transform: scale(1.02);} 100% { box-shadow: 0 0 6px rgba(45,106,79,0.2); transform: scale(0.98);} }
+.status-dot.syncing { width:14px; height:14px; border-radius:50%; border:2px solid var(--accent); background: transparent; box-shadow:none; animation: spin 1.2s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
+.status-dot.disconnected { background: var(--danger); box-shadow:none; }
+
+/* place near patient name */
+.patient-header { display:flex; align-items:center; gap:8px; }
+
+/* ------------------ Layered Depth (Z Axis) ------------------ */
+.z-level-0 { box-shadow: none; }
+.z-level-1 { box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+.z-level-2 { box-shadow: 0 12px 28px rgba(0,0,0,0.06); }
+.z-level-3 { box-shadow: 0 20px 40px rgba(0,0,0,0.10); }
+
+/* ------------------ Empty State (elegant) ------------------ */
+.empty-illustration { display:flex; flex-direction:column; align-items:center; gap:12px; color: #9aa1a6; padding:36px; }
+.empty-illustration .wave { width:240px; height:64px; border-radius:8px; border:1px dashed rgba(0,0,0,0.06); display:flex; align-items:center; justify-content:center; color: #c3c9cc; font-style: italic; font-family: 'Bodoni Moda', serif; }
+.empty-illustration p { font-family: 'Bodoni Moda', serif; font-style: italic; color: #93a0a6; }
+
+/* ------------------ Feature / Shortcut Cards ------------------ */
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.shortcut-card {
+  background: rgba(255,255,255,0.80);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.40);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: left;
+  transition: transform 300ms cubic-bezier(0.4,0,0.2,1), box-shadow 300ms ease, border-color 300ms ease;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(2,62,138,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.shortcut-card:hover {
+  transform: translateY(-8px);
+  background: var(--surface);
+  box-shadow: 0 20px 50px rgba(2,62,138,0.12);
+  border-color: var(--accent); /* Champagne Gold highlight */
+}
+
+.shortcut-card h3 {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin: 0 0 8px 0;
+}
+
+.shortcut-card p {
+  font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin:0;
+}
+
+/* icons inside shortcut */
+.shortcut-card .sc-icon { width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background: rgba(2,62,138,0.06); color:var(--primary); box-shadow: 0 8px 20px rgba(2,62,138,0.04); }
+
+/* Hero Welcome Section (glass header) */
+.hero-welcome {
+  display:flex; gap:18px; align-items:flex-start; background: rgba(255,255,255,0.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-left: 4px solid var(--accent); padding: 20px 22px; border-radius: var(--radius); margin-bottom: 18px; position:relative;
+}
+.hero-welcome .welcome-title { font-family: 'Bodoni Moda', serif; font-size: 2rem; margin:0; color:var(--primary); }
+.hero-welcome .welcome-desc { font-family: 'Montserrat'; font-size:0.95rem; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0; }
+
+/* Quick-stat watermark inside shortcut card */
+.shortcut-card .watermark {
+  position:absolute; right:18px; bottom:12px; font-family:'Bodoni Moda', serif; font-size:72px; color:var(--primary); opacity:0.06; pointer-events:none; line-height:0.8;
+}
+
+/* Categorized grouping */
+.section-group { margin-top: 26px; display:block; }
+.section-group.management { background: rgba(248,249,250,0.8); padding: 18px; border-radius: var(--radius); }
+.section-title { font-family:'Montserrat'; font-weight:600; color:var(--text-main); margin-bottom:10px; }
+
+/* Search bar upgrade - large rounded at top of shortcuts */
+.search-hero { display:flex; align-items:center; gap:12px; background: var(--surface); padding: 12px 16px; border-radius: 999px; border:1px solid rgba(43,45,66,0.04); box-shadow: 0 8px 22px rgba(2,62,138,0.04); }
+.search-hero input { border: none; background: transparent; outline: none; width:100%; font-size:1rem; padding:6px 0; font-style: italic; font-family: 'Playfair Display', serif; color: var(--text-main); }
+.search-hero .search-icon { color: var(--primary); width:20px; height:20px; }
+.search-hero input::placeholder { font-family: 'Playfair Display', serif; font-style: italic; color: rgba(43,45,66,0.35); }
+
+/* Small helper: action tile label */
+.shortcut-meta { margin-top:12px; display:flex; gap:8px; align-items:center; }
+
+/* ------------------ Interactive Glow Cursor (scaffold) ------------------ */
+:root { --glow-color: rgba(2,62,138,0.16); --glow-gold: rgba(212,175,55,0.12); }
+
+/* A faint radial behind the shortcut-grid that follows CSS variables --mx and --my (use JS to update) */
+.shortcut-grid::before{
+  content: '';
+  position: absolute;
+  inset: -40px -40px -40px -40px; /* extend slightly beyond grid */
+  pointer-events: none;
+  background: radial-gradient(450px 250px at var(--mx,50%) var(--my,50%), var(--glow-color), transparent 40%), radial-gradient(300px 160px at calc(var(--mx,50%) + 15%) calc(var(--my,50%) - 10%), var(--glow-gold), transparent 30%);
+  opacity: 0.9;
+  transition: background-position 160ms linear, opacity 220ms ease;
+  border-radius: calc(var(--radius) + 4px);
+  mix-blend-mode: screen;
+}
+
+/* Ensure the grid wrapper is positioned for the pseudo-element */
+.shortcut-grid { position: relative; }
+
+/* ------------------ Branded background watermark (SVG fallback) ------------------ */
+.content-container::before{
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400'><defs><linearGradient id='g' x1='0' x2='1'><stop stop-color='%23023E8A' stop-opacity='0.08'/><stop offset='1' stop-color='%23D4AF37' stop-opacity='0.02'/></linearGradient></defs><text x='50%' y='45%' font-family='Bodoni Moda, serif' font-size='140' text-anchor='middle' fill='url(%23g)' fill-opacity='0.06'>Auralis</text></svg>");
+  background-repeat: no-repeat; background-position: center right; background-size: 480px; opacity: 0.12;
+}
+
+/* ------------------ Progressive Disclosure (hover reveal) ------------------ */
+.shortcut-card { overflow: visible; }
+.shortcut-card .sc-desc { max-height: 0; opacity: 0; transform: translateY(8px); transition: max-height 300ms cubic-bezier(.2,.9,.3,1), opacity 260ms ease, transform 260ms ease; }
+.shortcut-card .sc-main { display:flex; align-items:center; gap:14px; }
+.shortcut-card .sc-meta { flex:1; }
+.shortcut-card:hover .sc-desc { max-height: 200px; opacity: 1; transform: translateY(0); }
+
+/* Slight expansion on hover to allow the reveal */
+.shortcut-card.hover-expand { transition: transform 260ms cubic-bezier(.16,.84,.3,1); }
+.shortcut-card:hover { transform: translateY(-10px) scale(1.01); }
+
+/* ------------------ Categorical Tints (subtle personalities) ------------------ */
+.shortcut-card::after{ content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit; transition: background-color 220ms ease, opacity 220ms ease; }
+.shortcut-card.tint-patient::after { background-color: rgba(2,62,138,0.05); opacity:0; }
+.shortcut-card.tint-technical::after { background-color: rgba(212,175,55,0.05); opacity:0; }
+.shortcut-card.tint-data::after { background-color: rgba(43,45,66,0.05); opacity:0; }
+.shortcut-card:hover.tint-patient::after, .shortcut-card:hover.tint-technical::after, .shortcut-card:hover.tint-data::after { opacity:1; }
+
+/* ------------------ Quick-Stat small badge (top-right) ------------------ */
+.shortcut-card .card-badge { position:absolute; top:12px; right:12px; width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-family:'Montserrat'; font-weight:700; font-size:10px; color:#fff; background: var(--primary); box-shadow: 0 6px 18px rgba(2,62,138,0.12); }
+
+/* Alternate small badge for 'new' flag */
+.shortcut-card .card-badge.small { width:20px; height:20px; font-size:9px; }
+
+/* ------------------ Entrance Stagger Animation ------------------ */
+@keyframes popIn { 0% { opacity:0; transform: translateY(20px) scale(0.98);} 100% { opacity:1; transform: translateY(0) scale(1);} }
+.shortcut-card { opacity:0; transform: translateY(20px); animation: popIn 420ms cubic-bezier(.22,.9,.3,1) both; }
+.shortcut-card:nth-child(1) { animation-delay: 0.08s; }
+.shortcut-card:nth-child(2) { animation-delay: 0.16s; }
+.shortcut-card:nth-child(3) { animation-delay: 0.24s; }
+.shortcut-card:nth-child(4) { animation-delay: 0.32s; }
+.shortcut-card:nth-child(5) { animation-delay: 0.40s; }
+.shortcut-card:nth-child(6) { animation-delay: 0.48s; }
+
+/* ------------------ Search Overlay (glass centered) ------------------ */
+.search-overlay { position: fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:28px; z-index:1200; visibility:hidden; opacity:0; transition: opacity 220ms ease, visibility 220ms; }
+.search-overlay.active { visibility: visible; opacity:1; }
+.search-overlay .overlay-backdrop { position:absolute; inset:0; background: rgba(12,18,28,0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.search-overlay .overlay-inner { position:relative; z-index:2; width:min(920px, 96%); }
+.search-overlay .overlay-inner .search-hero { background: rgba(255,255,255,0.92); padding:20px 22px; border-radius: 20px; box-shadow: 0 30px 80px rgba(2,62,138,0.16); }
+
+/* Search suggestions dropdown */
+.suggestions { position: absolute; left: 0; right: 0; margin-top:8px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(2,62,138,0.08); max-height: 320px; overflow:auto; list-style:none; padding:6px; z-index:3; border:1px solid rgba(43,45,66,0.06); }
+.suggestions.hidden { display:none; }
+.suggestion-item { padding:10px 12px; border-radius:8px; cursor:pointer; display:flex; gap:10px; align-items:center; color:var(--text-main); }
+.suggestion-item:hover, .suggestion-item:focus { background: linear-gradient(90deg, rgba(2,62,138,0.04), rgba(2,62,138,0.02)); outline: none; }
+.suggestion-item .s-name { font-family: 'Montserrat'; font-weight:600; }
+.suggestion-item .s-meta { font-size:0.85rem; color:var(--text-muted); }
+
+/* Ensure overlay positioning for suggestions */
+.search-overlay .overlay-inner { position:relative; }
+
+/* End dashboard enhancements */
+
+/* End additions */

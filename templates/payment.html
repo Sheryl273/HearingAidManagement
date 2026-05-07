@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card-header">
+    <div class="page-heading">Payments</div>
+    <div class="page-description">Track patient payments and billing</div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Record New Payment</div>
+        <div class="card-subtitle">Add a payment record for a patient</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="patient_id">Patient</label>
+            <select id="patient_id" name="patient_id" required>
+                <option value="">Select Patient</option>
+                {% for p in patients %}
+                <option value="{{ p[0] }}">{{ p[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="amount">Amount</label>
+            <input id="amount" name="amount" type="number" step="0.01" min="0" placeholder="0.00" required>
+        </div>
+        <div class="form-row">
+            <label for="payment_date">Payment Date</label>
+            <input id="payment_date" name="payment_date" type="date" required>
+        </div>
+        <div class="form-row">
+            <label for="payment_method">Payment Method</label>
+            <select id="payment_method" name="payment_method" required>
+                <option value="">Select Method</option>
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="Online">Online</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="fitting_id">Related Fitting (Optional)</label>
+            <select id="fitting_id" name="fitting_id">
+                <option value="">Select Fitting</option>
+                {% for f in fittings %}
+                <option value="{{ f[0] }}">{{ f[1] }} - {{ f[2] }} ({{ f[3] }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="notes">Notes</label>
+            <textarea id="notes" name="notes" rows="3" placeholder="Optional payment notes"></textarea>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Record Payment</button>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+
+<div style="height:18px"></div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Payment History</div>
+    </div>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Patient</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Hearing Aid</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if payments %}
+                {% for p in payments %}
+                <tr>
+                    <td>{{ p[2] }}</td>
+                    <td>{{ p[5] }}</td>
+                    <td>${{ "%.2f"|format(p[1]) }}</td>
+                    <td>{{ p[3] }}</td>
+                    <td>
+                        <span class="status-badge status-{{ p[4]|lower }}">{{ p[4] }}</span>
+                    </td>
+                    <td>{{ p[6] or '-' }}</td>
+                    <td>{{ p[7] or '-' }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td class="table-empty" colspan="7">No payments recorded yet.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.status-paid {
+    background: #d1fae5;
+    color: #065f46;
+}
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+</style>
+{% endblock %}

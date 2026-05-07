@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS hearing_aid_dbms;
+USE hearing_aid_dbms;

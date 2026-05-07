@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card-header">
+    <div class="page-heading">Manufacturers</div>
+    <div class="page-description">Manage hearing aid manufacturers</div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Add New Manufacturer</div>
+        <div class="card-subtitle">Register a hearing aid manufacturer</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="manufacturer_name">Manufacturer Name</label>
+            <input id="manufacturer_name" name="manufacturer_name" type="text" placeholder="e.g. Phonak, Oticon" required>
+        </div>
+        <div class="form-row">
+            <label for="country">Country</label>
+            <input id="country" name="country" type="text" placeholder="e.g. Switzerland, Denmark">
+        </div>
+        <div class="form-row">
+            <label for="contact_info">Contact Info</label>
+            <textarea id="contact_info" name="contact_info" rows="3" placeholder="Email, phone, website, etc."></textarea>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Add Manufacturer</button>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+
+<div style="height:18px"></div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Registered Manufacturers</div>
+    </div>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Manufacturer Name</th>
+                    <th>Country</th>
+                    <th>Contact Info</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if manufacturers %}
+                {% for m in manufacturers %}
+                <tr>
+                    <td>{{ m[0] }}</td>
+                    <td>{{ m[1] }}</td>
+                    <td>{{ m[2] }}</td>
+                    <td>{{ m[3] }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td class="table-empty" colspan="4">No manufacturers registered yet.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card-header">
+    <div class="page-heading">Patient History</div>
+    <div class="page-description">History of hearing tests and fittings for {{ patient[1] }}</div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Hearing Tests</div>
+    </div>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Left Ear</th>
+                    <th>Right Ear</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if tests %}
+                {% for t in tests %}
+                <tr>
+                    <td>{{ t[0] }}</td>
+                    <td>{{ t[1] }}</td>
+                    <td>{{ t[2] }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td class="table-empty" colspan="3">No hearing tests found.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="height:18px"></div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Fittings</div>
+    </div>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Hearing Aid</th>
+                    <th>Fitting Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if fittings %}
+                {% for f in fittings %}
+                <tr>
+                    <td>{{ f[0] }}</td>
+                    <td>{{ f[1] }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td class="table-empty" colspan="2">No fittings found.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Add Hearing Aid</div>
+        <div class="card-subtitle">Add a device to your hearing aid catalog.</div>
+    </div>
+    <form method="post">
+        <div class="form-row">
+            <label for="model">Model</label>
+            <input id="model" name="model" type="text" placeholder="Model name or number" required>
+        </div>
+        <div class="form-row">
+            <label for="type">Type</label>
+            <input id="type" name="type" type="text" placeholder="e.g. BTE, ITE, RIC" required>
+        </div>
+        <div class="form-row">
+            <label for="manufacturer_id">Manufacturer</label>
+            <select id="manufacturer_id" name="manufacturer_id">
+                <option value="">Select Manufacturer</option>
+                {% for m in manufacturers %}
+                <option value="{{ m[0] }}">{{ m[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="price">Price</label>
+            <input id="price" name="price" type="number" min="0" step="0.01" placeholder="Device price" required>
+        </div>
+        <div class="form-row">
+            <label for="stock">Stock</label>
+            <input id="stock" name="stock" type="number" min="0" step="1" placeholder="Units in stock" value="0">
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Save Hearing Aid</button>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

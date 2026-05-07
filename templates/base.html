@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hearing Aid DBMS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+    <header class="app-header">
+        <div class="app-header-top">
+            <div>
+                <div class="app-title">Hearing Aid Management System</div>
+                <div class="app-subtitle">Patients · Tests · Hearing Aids · Fittings · Reports</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('add_patient') }}">Add Patient</a>
+            <a href="{{ url_for('patients') }}">Patients</a>
+            <a href="{{ url_for('hearing_test') }}">Hearing Tests</a>
+            <a href="{{ url_for('appointment') }}">Appointments</a>
+            <a href="{{ url_for('doctor') }}">Doctors</a>
+            <a href="{{ url_for('hearing_aid') }}">Hearing Aids</a>
+            <a href="{{ url_for('manufacturer') }}">Manufacturers</a>
+            <a href="{{ url_for('fitting') }}">Fittings</a>
+            <a href="{{ url_for('payment') }}">Payments</a>
+            <a href="{{ url_for('report') }}">Reports</a>
+        </nav>
+    </header>
+    <main class="app-main">
+        <div class="content-container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    <div class="app-footer">
+        Hearing Aid DBMS &middot; Built with Flask
+    </div>
+</div>
+</body>
+</html>

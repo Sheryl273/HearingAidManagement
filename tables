@@ -1,0 +1,5 @@
+SELECT * FROM Patient;
+SELECT * FROM HearingTest;
+SELECT * FROM HearingAid;
+SELECT * FROM Fitting;
+SELECT * FROM Appointment;
